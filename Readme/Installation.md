@@ -254,10 +254,13 @@ PSCyr — это пакет красивых русских шрифтов дл�
 
 Нужно скачать шаблон, найти в папке PSCyr файл pscyr0.4d.zip и распаковать его
 содержимое куда угодно. Чтобы не переписывать пути, папка с содержимым должна
-называться PSCyr, а не pscyr. Затем надо зайти в
+называться PSCyr, а не pscyr, как в архиве. Затем надо зайти в
 терминал, перейти к тому каталогу, где лежит папка PSCyr с содержимым, и
 выполнить команды из вышеупомянутого руководства:
 ```bash
+mkdir ./PSCyr/fonts/map ./PSCyr/fonts/enc
+cp ./PSCyr/dvips/pscyr/*.map ./PSCyr/fonts/map/
+cp ./PSCyr/dvips/pscyr/*.enc ./PSCyr/fonts/enc/
 echo "fadr6t AdvertisementPSCyr \"T2AEncoding ReEncodeFont\"" > ./PSCyr/fonts/map/pscyr.map
 ```
 Дальше надо узнать, где у вас локальный каталог texmf. Для этого выполняем
@@ -284,19 +287,14 @@ sudo mktexlsr
 #!/bin/sh
 
 INSTALLDIR=`kpsewhich -expand-var='$TEXMFLOCAL'`
-mkdir -p $INSTALLDIR/{tex/latex,fonts/tfm/public,fonts/vf/public,fonts/type1/public,fonts/afm/public,doc/fonts,fonts/map/dvips,fonts/map/dvipdfm,fonts/enc/dvips}/pscyr
-mv fonts/map/dvips/pscyr/* $INSTALLDIR/fonts/map/dvips/pscyr
-mv fonts/map/dvipdfm/pscyr/* $INSTALLDIR/fonts/map/dvipdfm/pscyr
-mv fonts/enc/dvips/* $INSTALLDIR/fonts/enc/dvips/*
+mkdir -p $INSTALLDIR/{tex/latex,fonts/tfm/public,fonts/vf/public,fonts/type1/public,fonts/map/dvips,fonts/afm/public,doc/fonts}/pscyr
+mv dvips/pscyr/* $INSTALLDIR/fonts/map/dvips/pscyr
 mv tex/latex/pscyr/* $INSTALLDIR/tex/latex/pscyr
 mv fonts/tfm/public/pscyr/* $INSTALLDIR/fonts/tfm/public/pscyr
 mv fonts/vf/public/pscyr/* $INSTALLDIR/fonts/vf/public/pscyr
 mv fonts/type1/public/pscyr/* $INSTALLDIR/fonts/type1/public/pscyr
 mv fonts/afm/public/pscyr/* $INSTALLDIR/fonts/afm/public/pscyr
 mv LICENSE doc/README.koi doc/PROBLEMS ChangeLog $INSTALLDIR/doc/fonts/pscyr
-
-VARTEXFONTS=`kpsewhich -expand-var='$VARTEXFONTS'`
-rm -f $VARTEXFONTS/pk/modeless/public/pscyr/*
 
 mktexlsr
 
